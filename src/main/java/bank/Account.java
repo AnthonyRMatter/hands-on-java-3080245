@@ -11,7 +11,7 @@ public class Account {
   public Account(int id, String type, double balance){
     setId(id);
     setType(type);
-    setBalanace(balance);
+    setBalance(balance);
   }
 
 
@@ -31,12 +31,12 @@ public class Account {
     this.type = type;
   }
 
-  public double getBalanace() {
+  public double getBalance() {
     return this.balance;
   }
 
-  public void setBalanace(double balanace) {
-    this.balance = balanace;
+  public void setBalance(double balance) {
+    this.balance = balance;
   }
   
   public void deposit(double amount) throws AmountException{
@@ -46,7 +46,7 @@ public class Account {
     }
     else{
       double newBalance = balance + amount;
-      setBalanace(newBalance);
+      setBalance(newBalance);
       DataSource.updateAccountBalance(id, newBalance);
     }
 
@@ -56,6 +56,14 @@ public class Account {
 
     if(amount < 0){
       throw new AmountException("The withdrawl amount must be greater than 0.");
+    }
+    else if(amount > getBalance()){
+      throw new AmountException("You do not have sufficient funds for this withdrawl.");
+    }
+    else{
+      double newBalance = balance - amount;
+      setBalance(newBalance);
+      DataSource.updateAccountBalance(id, newBalance);
     }
   }
 
